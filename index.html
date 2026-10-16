@@ -1,0 +1,349 @@
+<meta charset="utf-8">
+<title>Bet Mitzvah Prayer Practice</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400;1,7..72,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: sticky player bar over a single reading column; each prayer line is a 3-column row (Hebrew | transliteration | English) that stacks on phones. */
+:root {
+  --bg: #fbfaf7; --surface: #ffffff; --fg: #1d2330; --muted: #5d6474; --rule: #e4e1d8;
+  --accent: #23468c; --accent-soft: #e6ecf8; --line-active: #fff6d9;
+  --he: "Frank Ruhl Libre", "Times New Roman", "Arial Hebrew", serif;
+  --body: "Literata", Georgia, serif;
+  --ui: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --w0:#1f5fbf; --w1:#c0392b; --w2:#1e8449; --w3:#8e44ad; --w4:#c45200;
+  --w5:#00808a; --w6:#c2185b; --w7:#7a6a00; --w8:#6d4c41; --w9:#546e7a;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg:#14171e; --surface:#1b1f28; --fg:#e8e6e1; --muted:#9aa1ae; --rule:#2c313c;
+  --accent:#8fb0f0; --accent-soft:#25304a; --line-active:#2e2a1c;
+  --w0:#79a8f2; --w1:#f08070; --w2:#6fcf8e; --w3:#c69bea; --w4:#f5a35c;
+  --w5:#4fd1d9; --w6:#f27ba8; --w7:#d9c84a; --w8:#c9a28f; --w9:#a8bccb; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg:#14171e; --surface:#1b1f28; --fg:#e8e6e1; --muted:#9aa1ae; --rule:#2c313c;
+  --accent:#8fb0f0; --accent-soft:#25304a; --line-active:#2e2a1c;
+  --w0:#79a8f2; --w1:#f08070; --w2:#6fcf8e; --w3:#c69bea; --w4:#f5a35c;
+  --w5:#4fd1d9; --w6:#f27ba8; --w7:#d9c84a; --w8:#c9a28f; --w9:#a8bccb; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+header.top { padding-block: 28px 12px; display: grid; gap: 6px; }
+header.top h1 { font-family: var(--body); font-weight: 600; font-size: clamp(26px, 4vw, 34px); margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+header.top h1 .he { font-family: var(--he); font-weight: 500; color: var(--accent); margin-inline-start: 10px; }
+header.top p { margin: 0; color: var(--muted); font-family: var(--ui); font-size: 14px; max-width: 70ch; line-height: 1.5; }
+
+.player { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-block: 1px solid var(--rule); font-family: var(--ui); font-size: 14px; }
+.player .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding-block: 10px; }
+.player .now { flex: 1 1 220px; min-width: 0; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.player .now b { color: var(--fg); font-weight: 600; }
+.ctrl { display: flex; align-items: center; gap: 6px; }
+.ctrl label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+button, select { font-family: var(--ui); font-size: 14px; }
+.btn { border: 1px solid var(--rule); background: var(--surface); color: var(--fg); border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); font-weight: 600; }
+.btn:focus-visible, select:focus-visible, .w:focus-visible, .lp:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+select { border: 1px solid var(--rule); background: var(--surface); color: var(--fg); border-radius: 6px; padding: 5px 6px; max-width: 200px; }
+input[type=range] { width: 90px; accent-color: var(--accent); }
+.rate { font-variant-numeric: tabular-nums; min-width: 3.2ch; }
+.warn { flex-basis: 100%; color: var(--w1); font-size: 13px; margin: 0; }
+
+nav.toc { padding-block: 16px 4px; display: flex; flex-wrap: wrap; gap: 6px; font-family: var(--ui); font-size: 13px; }
+nav.toc a { text-decoration: none; color: var(--fg); border: 1px solid var(--rule); border-radius: 999px; padding: 4px 10px; background: var(--surface); }
+nav.toc a:hover { border-color: var(--accent); }
+nav.toc a span { color: var(--muted); font-variant-numeric: tabular-nums; margin-inline-start: 4px; }
+
+section.prayer { padding-block: 26px 6px; scroll-margin-top: 70px; }
+.ph { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px; border-bottom: 2px solid var(--fg); padding-bottom: 6px; }
+.ph h2 { font-size: 22px; font-weight: 600; margin: 0; text-wrap: balance; flex: 1 1 auto; }
+.page { font-family: var(--ui); font-size: 13px; font-weight: 600; background: var(--accent-soft); color: var(--accent); padding: 3px 9px; border-radius: 4px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.note { font-family: var(--ui); font-size: 13px; color: var(--muted); font-style: italic; margin: 8px 0 0; }
+.colhead { display: grid; grid-template-columns: 34px 1fr 1fr 1.1fr; gap: 14px; font-family: var(--ui); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: 8px 0 2px; }
+.colhead .h { text-align: right; }
+
+.lab { font-family: var(--ui); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: 14px 0 0 48px; }
+.row { display: grid; grid-template-columns: 34px 1fr 1fr 1.1fr; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--rule); align-items: start; border-radius: 6px; transition: background .2s; }
+.row.active { background: var(--line-active); }
+.row > div { min-width: 0; }
+.lp { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--rule); background: var(--surface); color: var(--accent); cursor: pointer; display: grid; place-items: center; margin-top: 4px; padding: 0; }
+.lp:hover { border-color: var(--accent); }
+.lp svg { width: 12px; height: 12px; fill: currentColor; }
+.he { font-family: var(--he); font-size: 25px; line-height: 1.6; text-align: right; }
+.tr { font-style: italic; line-height: 1.55; font-weight: 600; font-size: 16px; }
+.en { line-height: 1.55; font-size: 16px; font-weight: 600; }
+.inst { font-family: var(--ui); font-size: 13px; color: var(--muted); font-style: italic; grid-column: 2 / -1; }
+.w { border-radius: 4px; padding: 0 2px; cursor: pointer; transition: background .15s, color .15s; }
+.he .w { padding: 0 3px; }
+.tr .w, .en .w { margin: 0 -2px; }
+.w:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.w.hi { color: var(--bg) !important; background: currentColor; }
+.w.hi { background: var(--hc); color: var(--surface) !important; }
+.c0{color:var(--w0);--hc:var(--w0)} .c1{color:var(--w1);--hc:var(--w1)} .c2{color:var(--w2);--hc:var(--w2)} .c3{color:var(--w3);--hc:var(--w3)} .c4{color:var(--w4);--hc:var(--w4)}
+.c5{color:var(--w5);--hc:var(--w5)} .c6{color:var(--w6);--hc:var(--w6)} .c7{color:var(--w7);--hc:var(--w7)} .c8{color:var(--w8);--hc:var(--w8)} .c9{color:var(--w9);--hc:var(--w9)}
+footer { padding-block: 30px 40px; font-family: var(--ui); font-size: 13px; color: var(--muted); line-height: 1.6; max-width: 75ch; }
+
+@media (max-width: 720px) {
+  .colhead { display: none; }
+  .row { grid-template-columns: 34px 1fr; gap: 4px 12px; }
+  .row > .lpc { grid-row: 1 / span 3; }
+  .he { grid-column: 2; font-size: 24px; }
+  .tr, .en { grid-column: 2; }
+  .lab { padding-left: 46px; }
+}
+@media (prefers-reduced-motion: reduce) { .row, .w { transition: none; } }
+</style>
+
+<header class="top wrap">
+  <h1>Bet Mitzvah Prayer Practice <span class="he" lang="he" dir="rtl">תְּפִלּוֹת</span></h1>
+  <p>Press play on a prayer or a single line, or tap any word to hear it. The word being spoken lights up in the Hebrew, the transliteration and the English at once. Page numbers are from <b>Mishkan T’filah, Shabbat edition</b>.</p>
+</header>
+
+<div class="player">
+  <div class="wrap">
+    <div class="ctrl">
+      <button class="btn primary" id="playAll" type="button">Play from start</button>
+      <button class="btn" id="pause" type="button" disabled>Pause</button>
+      <button class="btn" id="stop" type="button" disabled>Stop</button>
+    </div>
+    <div class="now" id="now">Ready.</div>
+    <div class="ctrl"><label for="rate">Speed</label><input id="rate" type="range" min="0.4" max="1.2" step="0.05" value="0.75"><span class="rate" id="rateOut">0.75×</span></div>
+    <div class="ctrl"><label for="mode">Pace</label>
+      <select id="mode"><option value="flow">Smooth</option><option value="word">Slow, word by word</option></select></div>
+    <div class="ctrl"><label for="repeat">Repeat</label>
+      <select id="repeat"><option value="0">Off</option><option value="line">Line</option><option value="prayer">Prayer</option></select></div>
+    <div class="ctrl"><label for="voice">Voice</label><select id="voice"></select></div>
+    <p class="warn" id="warn" hidden></p>
+  </div>
+</div>
+
+<main class="wrap">
+  <nav class="toc" id="toc" aria-label="Prayers"></nav>
+  <div id="prayers"></div>
+  <footer>
+    The voice is your device’s built-in Hebrew text-to-speech. It reads the words; it doesn’t chant or sing the melody, and it can mispronounce some words.
+    For melodies, learn from your cantor’s or tutor’s recordings. The English is a literal, word-by-word translation, not the one printed in Mishkan T’filah.
+    Wording follows common Reform usage. Check it against the prayer book.
+  </footer>
+</main>
+
+<script id="data" type="application/json">[{"title": "Tallit Blessing", "page": "72", "note": null, "lines": [{"he": "בָּרוּךְ אַתָּה, יְיָ אֱלֹהֵינוּ, מֶלֶךְ הָעוֹלָם,", "tr": "Baruch atah, Adonai Eloheinu, Melech haolam,", "en": "[0 Blessed] [1 are You], [2 Adonai] [3 our God], [4 Sovereign] [5 of the universe],"}, {"he": "אֲשֶׁר קִדְּשָׁנוּ בְּמִצְוֹתָיו, וְצִוָּנוּ לְהִתְעַטֵּף בַּצִּיצִית.", "tr": "asher kid'shanu b'mitzvotav, v'tzivanu l'hitateif batzitzit.", "en": "[0 who] [1 has made us holy] [2 with Your commandments], [3 and commanded us] [4 to wrap ourselves] [5 in tzitzit (fringes)]."}]}, {"title": "Nisim B'chol Yom (Morning Blessings)", "page": "80", "note": "Each blessing below begins with the opening line “Baruch atah, Adonai Eloheinu, Melech haolam.”", "lines": [{"he": "בָּרוּךְ אַתָּה, יְיָ אֱלֹהֵינוּ, מֶלֶךְ הָעוֹלָם,", "tr": "Baruch atah, Adonai Eloheinu, Melech haolam,", "en": "[0 Blessed] [1 are You], [2 Adonai] [3 our God], [4 Sovereign] [5 of the universe],"}, {"he": "אֲשֶׁר נָתַן לַשֶּׂכְוִי בִינָה לְהַבְחִין בֵּין יוֹם וּבֵין לָיְלָה.", "tr": "asher natan lasechvi vinah l'havchin bein yom uvein lailah.", "en": "[0 who] [1 gave] [2 the mind (lit. the rooster)] [3 understanding] [4 to distinguish] [5 between] [6 day] [7 and] [8 night]."}, {"he": "שֶׁעָשַׂנִי בְּצַלְמוֹ.", "tr": "she-asani b'tzalmo.", "en": "[0 who made me] [1 in Your image]."}, {"he": "שֶׁעָשַׂנִי יִשְׂרָאֵל.", "tr": "she-asani Yisrael.", "en": "[0 who made me] [1 a Jew (lit. Israel)]."}, {"he": "שֶׁעָשַׂנִי בֶּן/בַּת חוֹרִין.", "tr": "she-asani ben/bat chorin.", "en": "[0 who made me] [1 a son/daughter] [2 of freedom]."}, {"he": "פּוֹקֵחַ עִוְרִים.", "tr": "pokei-ach ivrim.", "en": "[0 who opens the eyes of] [1 the blind]."}, {"he": "מַלְבִּישׁ עֲרֻמִּים.", "tr": "malbish arumim.", "en": "[0 who clothes] [1 the naked]."}, {"he": "מַתִּיר אֲסוּרִים.", "tr": "matir asurim.", "en": "[0 who frees] [1 the captive]."}, {"he": "זוֹקֵף כְּפוּפִים.", "tr": "zokeif k'fufim.", "en": "[0 who raises up] [1 those bowed down]."}, {"he": "רוֹקַע הָאָרֶץ עַל הַמָּיִם.", "tr": "roka ha-aretz al hamayim.", "en": "[0 who spreads out] [1 the earth] [2 over] [3 the waters]."}, {"he": "שֶׁעָשָׂה לִּי כָּל צָרְכִּי.", "tr": "she-asah li kol tzorki.", "en": "[0 who has provided] [1 for me] [2 all] [3 my needs]."}, {"he": "הַמֵּכִין מִצְעֲדֵי גָבֶר.", "tr": "hameichin mitzadei gaver.", "en": "[0 who makes firm] [1 the steps] [2 of each person]."}, {"he": "אוֹזֵר יִשְׂרָאֵל בִּגְבוּרָה.", "tr": "ozeir Yisrael bigvurah.", "en": "[0 who girds] [1 Israel] [2 with strength]."}, {"he": "עוֹטֵר יִשְׂרָאֵל בְּתִפְאָרָה.", "tr": "oteir Yisrael b'tifarah.", "en": "[0 who crowns] [1 Israel] [2 with glory]."}, {"he": "הַנּוֹתֵן לַיָּעֵף כֹּחַ.", "tr": "hanotein laya-eif ko-ach.", "en": "[0 who gives] [2 strength] [1 to the weary]."}, {"he": "הַמַּעֲבִיר שֵׁנָה מֵעֵינָי וּתְנוּמָה מֵעַפְעַפָּי.", "tr": "hamaavir sheinah mei-einai ut'numah mei-afapai.", "en": "[0 who removes] [1 sleep] [2 from my eyes] [3 and slumber] [4 from my eyelids]."}]}, {"title": "Barchu", "page": "108", "note": null, "lines": [{"he": "בָּרְכוּ אֶת יְיָ הַמְבֹרָךְ.", "tr": "Bar'chu et Adonai ham'vorach.", "en": "[0 Praise] [2 Adonai], [3 the One who is to be praised].", "label": "Leader"}, {"he": "בָּרוּךְ יְיָ הַמְבֹרָךְ לְעוֹלָם וָעֶד.", "tr": "Baruch Adonai ham'vorach l'olam va-ed.", "en": "[0 Praised be] [1 Adonai], [2 the One who is to be praised], [3 forever] [4 and ever].", "label": "All"}]}, {"title": "Shema & V'ahavta", "page": "114–116", "note": null, "lines": [{"he": "שְׁמַע יִשְׂרָאֵל, יְיָ אֱלֹהֵינוּ, יְיָ אֶחָד.", "tr": "Sh'ma Yisrael, Adonai Eloheinu, Adonai Echad.", "en": "[0 Hear], [1 O Israel]: [2 Adonai] [3 is our God], [4 Adonai] [5 is One]."}, {"he": "בָּרוּךְ שֵׁם כְּבוֹד מַלְכוּתוֹ לְעוֹלָם וָעֶד.", "tr": "Baruch sheim k'vod malchuto l'olam va-ed.", "en": "[0 Blessed] [1 is the name] [2 of the glory] [3 of God's sovereignty] [4 forever] [5 and ever]."}, {"he": "וְאָהַבְתָּ אֵת יְיָ אֱלֹהֶיךָ,", "tr": "V'ahavta et Adonai Elohecha,", "en": "[0 You shall love] [2 Adonai] [3 your God]"}, {"he": "בְּכָל לְבָבְךָ, וּבְכָל נַפְשְׁךָ, וּבְכָל מְאֹדֶךָ.", "tr": "b'chol l'vav'cha, uv'chol nafsh'cha, uv'chol m'odecha.", "en": "[0 with all] [1 your heart], [2 with all] [3 your soul], [4 and with all] [5 your might]."}, {"he": "וְהָיוּ הַדְּבָרִים הָאֵלֶּה, אֲשֶׁר אָנֹכִי מְצַוְּךָ הַיּוֹם, עַל לְבָבֶךָ.", "tr": "V'hayu had'varim ha-eileh, asher anochi m'tzav'cha hayom, al l'vavecha.", "en": "[2 These] [1 words], [3 which] [4 I] [5 command you] [6 this day], [0 shall be] [7 upon] [8 your heart]."}, {"he": "וְשִׁנַּנְתָּם לְבָנֶיךָ, וְדִבַּרְתָּ בָּם,", "tr": "V'shinantam l'vanecha, v'dibarta bam,", "en": "[0 Teach them diligently] [1 to your children], [2 and speak] [3 of them]"}, {"he": "בְּשִׁבְתְּךָ בְּבֵיתֶךָ, וּבְלֶכְתְּךָ בַדֶּרֶךְ, וּבְשָׁכְבְּךָ וּבְקוּמֶךָ.", "tr": "b'shivt'cha b'veitecha, uv'lecht'cha vaderech, uv'shochb'cha uvkumecha.", "en": "[0 when you sit] [1 in your house], [2 when you walk] [3 on the way], [4 when you lie down] [5 and when you rise up]."}, {"he": "וּקְשַׁרְתָּם לְאוֹת עַל יָדֶךָ, וְהָיוּ לְטֹטָפֹת בֵּין עֵינֶיךָ.", "tr": "Uk'shartam l'ot al yadecha, v'hayu l'totafot bein einecha.", "en": "[0 Bind them] [1 as a sign] [2 upon] [3 your hand], [4 and let them be] [5 symbols] [6 between] [7 your eyes]."}, {"he": "וּכְתַבְתָּם עַל מְזֻזוֹת בֵּיתֶךָ, וּבִשְׁעָרֶיךָ.", "tr": "Uch'tavtam al m'zuzot beitecha, uvisharecha.", "en": "[0 Write them] [1 on] [2 the doorposts] [3 of your house] [4 and on your gates]."}, {"he": "לְמַעַן תִּזְכְּרוּ וַעֲשִׂיתֶם אֶת כָּל מִצְוֹתָי,", "tr": "L'maan tizk'ru va-asitem et kol mitzvotai,", "en": "[0 So that] [1 you will remember] [2 and do] [4 all] [5 My commandments]"}, {"he": "וִהְיִיתֶם קְדֹשִׁים לֵאלֹהֵיכֶם.", "tr": "vih'yitem k'doshim l'Eloheichem.", "en": "[0 and be] [1 holy] [2 to your God]."}, {"he": "אֲנִי יְיָ אֱלֹהֵיכֶם, אֲשֶׁר הוֹצֵאתִי אֶתְכֶם מֵאֶרֶץ מִצְרַיִם,", "tr": "Ani Adonai Eloheichem, asher hotzeiti et'chem mei-eretz Mitzrayim,", "en": "[0 I am] [1 Adonai] [2 your God], [3 who] [4 brought] [5 you] out [6 of the land of] [7 Egypt]"}, {"he": "לִהְיוֹת לָכֶם לֵאלֹהִים, אֲנִי יְיָ אֱלֹהֵיכֶם.", "tr": "lih'yot lachem l'Elohim. Ani Adonai Eloheichem.", "en": "[0 to be] [2 God] [1 for you]. [3 I am] [4 Adonai] [5 your God]."}]}, {"title": "Amidah: Adonai S'fatai, Avot v'Imahot, G'vurot", "page": "124–128", "note": null, "lines": [{"he": "אֲדֹנָי שְׂפָתַי תִּפְתָּח, וּפִי יַגִּיד תְּהִלָּתֶךָ.", "tr": "Adonai s'fatai tiftach, ufi yagid t'hilatecha.", "en": "[0 Adonai], [2 open] [1 my lips], [3 that my mouth] [4 may declare] [5 Your praise].", "label": "Adonai S'fatai"}, {"he": "בָּרוּךְ אַתָּה, יְיָ,", "tr": "Baruch atah, Adonai,", "en": "[0 Blessed] [1 are You], [2 Adonai],", "label": "Avot v'Imahot"}, {"he": "אֱלֹהֵינוּ וֵאלֹהֵי אֲבוֹתֵינוּ וְאִמּוֹתֵינוּ,", "tr": "Eloheinu v'Elohei avoteinu v'imoteinu,", "en": "[0 our God] [1 and God] [2 of our fathers] [3 and our mothers],"}, {"he": "אֱלֹהֵי אַבְרָהָם, אֱלֹהֵי יִצְחָק, וֵאלֹהֵי יַעֲקֹב,", "tr": "Elohei Avraham, Elohei Yitzchak, v'Elohei Yaakov,", "en": "[0 God] [1 of Abraham], [2 God] [3 of Isaac], [4 and God] [5 of Jacob],"}, {"he": "אֱלֹהֵי שָׂרָה, אֱלֹהֵי רִבְקָה, אֱלֹהֵי לֵאָה, וֵאלֹהֵי רָחֵל.", "tr": "Elohei Sarah, Elohei Rivkah, Elohei Leah, v'Elohei Rachel.", "en": "[0 God] [1 of Sarah], [2 God] [3 of Rebecca], [4 God] [5 of Leah], [6 and God] [7 of Rachel]."}, {"he": "הָאֵל הַגָּדוֹל הַגִּבּוֹר וְהַנּוֹרָא, אֵל עֶלְיוֹן,", "tr": "Ha-El hagadol hagibor v'hanora, El elyon,", "en": "[1 Great], [2 mighty], [3 and awesome] [0 God], [4 God] [5 most high],"}, {"he": "גּוֹמֵל חֲסָדִים טוֹבִים, וְקוֹנֵה הַכֹּל,", "tr": "gomeil chasadim tovim, v'koneih hakol,", "en": "[0 who bestows] [2 good] [1 kindness] [3 and is Master of] [4 all],"}, {"he": "וְזוֹכֵר חַסְדֵי אָבוֹת וְאִמָּהוֹת,", "tr": "v'zocheir chasdei avot v'imahot,", "en": "[0 who remembers] [1 the loving deeds] [2 of our fathers] [3 and mothers],"}, {"he": "וּמֵבִיא גְאֻלָּה לִבְנֵי בְנֵיהֶם, לְמַעַן שְׁמוֹ בְּאַהֲבָה.", "tr": "umeivi g'ulah livnei v'neihem, l'maan sh'mo b'ahavah.", "en": "[0 and brings] [1 redemption] [2 to the children] [3 of their children], [4 for the sake of] [5 God's name], [6 in love]."}, {"he": "מֶלֶךְ עוֹזֵר וּמוֹשִׁיעַ וּמָגֵן.", "tr": "Melech ozeir umoshia umagein.", "en": "[0 Sovereign], [1 Helper], [2 Savior], [3 and Shield]."}, {"he": "בָּרוּךְ אַתָּה, יְיָ, מָגֵן אַבְרָהָם וְעֶזְרַת שָׂרָה.", "tr": "Baruch atah, Adonai, magein Avraham v'ezrat Sarah.", "en": "[0 Blessed] [1 are You], [2 Adonai], [3 Shield] [4 of Abraham] [5 and Help] [6 of Sarah]."}, {"he": "אַתָּה גִּבּוֹר לְעוֹלָם, אֲדֹנָי,", "tr": "Atah gibor l'olam, Adonai,", "en": "[0 You] [1 are mighty] [2 forever], [3 Adonai];", "label": "G'vurot"}, {"he": "מְחַיֵּה הַכֹּל_(מֵתִים) אַתָּה, רַב לְהוֹשִׁיעַ.", "tr": "m'chayeih hakol_(meitim) atah, rav l'hoshia.", "en": "[2 You] [0 give life to] [1 all (the dead)], [3 great] [4 to save]."}, {"he": "מַשִּׁיב הָרוּחַ וּמוֹרִיד הַגֶּשֶׁם.", "tr": "Mashiv haruach umorid hagashem.", "en": "[0 who causes] [1 the wind] to blow [2 and brings down] [3 the rain].", "label": "In winter"}, {"he": "מוֹרִיד הַטָּל.", "tr": "Morid hatal.", "en": "[0 who brings down] [1 the dew].", "label": "In summer"}, {"he": "מְכַלְכֵּל חַיִּים בְּחֶסֶד,", "tr": "M'chalkeil chayim b'chesed,", "en": "[0 You sustain] [1 the living] [2 with kindness],"}, {"he": "מְחַיֵּה הַכֹּל_(מֵתִים) בְּרַחֲמִים רַבִּים,", "tr": "m'chayeih hakol_(meitim) b'rachamim rabim,", "en": "[0 give life to] [1 all (the dead)] [3 with great] [2 compassion],"}, {"he": "סוֹמֵךְ נוֹפְלִים, וְרוֹפֵא חוֹלִים, וּמַתִּיר אֲסוּרִים,", "tr": "someich noflim, v'rofei cholim, umatir asurim,", "en": "[0 support] [1 the falling], [2 heal] [3 the sick], [4 free] [5 the captive],"}, {"he": "וּמְקַיֵּם אֱמוּנָתוֹ לִישֵׁנֵי עָפָר.", "tr": "um'kayeim emunato lisheinei afar.", "en": "[0 and keep] [1 faith] [2 with those who sleep in] [3 the dust]."}, {"he": "מִי כָמוֹךָ, בַּעַל גְּבוּרוֹת, וּמִי דּוֹמֶה לָּךְ,", "tr": "Mi chamocha, baal g'vurot, umi domeh lach,", "en": "[0 Who] [1 is like You], [2 Master] [3 of mighty deeds]? [4 And who] [5 is comparable] [6 to You],"}, {"he": "מֶלֶךְ מֵמִית וּמְחַיֶּה וּמַצְמִיחַ יְשׁוּעָה.", "tr": "Melech meimit um'chayeh umatzmiach y'shuah.", "en": "[0 Sovereign] [1 who brings death] [2 and gives life] [3 and causes] [4 salvation] [3 to flourish]?"}, {"he": "וְנֶאֱמָן אַתָּה לְהַחֲיוֹת הַכֹּל_(מֵתִים).", "tr": "V'ne-eman atah l'hachayot hakol_(meitim).", "en": "[1 You] [0 are faithful] [2 to give life to] [3 all (the dead)]."}, {"he": "בָּרוּךְ אַתָּה, יְיָ, מְחַיֵּה הַכֹּל_(הַמֵּתִים).", "tr": "Baruch atah, Adonai, m'chayeih hakol_(hameitim).", "en": "[0 Blessed] [1 are You], [2 Adonai], [3 who gives life to] [4 all (the dead)]."}]}, {"title": "L'dor Vador", "page": "130 (bottom)", "note": null, "lines": [{"he": "לְדוֹר וָדוֹר נַגִּיד גָּדְלֶךָ,", "tr": "L'dor vador nagid godlecha,", "en": "[0 From generation] [1 to generation] [2 we will declare] [3 Your greatness],"}, {"he": "וּלְנֵצַח נְצָחִים קְדֻשָּׁתְךָ נַקְדִּישׁ,", "tr": "ul'neitzach n'tzachim k'dushat'cha nakdish,", "en": "[0 and for all] [1 eternity] [3 we will proclaim] [2 Your holiness]."}, {"he": "וְשִׁבְחֲךָ, אֱלֹהֵינוּ, מִפִּינוּ לֹא יָמוּשׁ לְעוֹלָם וָעֶד.", "tr": "v'shivchacha, Eloheinu, mipinu lo yamush l'olam va-ed.", "en": "[0 Your praise], [1 our God], [3 will not] [4 depart] [2 from our mouths] [5 forever] [6 and ever]."}, {"he": "בָּרוּךְ אַתָּה, יְיָ, הָאֵל הַקָּדוֹשׁ.", "tr": "Baruch atah, Adonai, ha-El hakadosh.", "en": "[0 Blessed] [1 are You], [2 Adonai], [4 the holy] [3 God]."}]}, {"title": "Ein Kamocha", "page": "244", "note": null, "lines": [{"he": "אֵין כָּמוֹךָ בָאֱלֹהִים, אֲדֹנָי, וְאֵין כְּמַעֲשֶׂיךָ.", "tr": "Ein kamocha va-elohim, Adonai, v'ein k'maasecha.", "en": "[0 There is none] [1 like You] [2 among the gods], [3 Adonai], [4 and there are none] [5 like Your works]."}, {"he": "מַלְכוּתְךָ מַלְכוּת כָּל עֹלָמִים, וּמֶמְשַׁלְתְּךָ בְּכָל דּוֹר וָדֹר.", "tr": "Malchut'cha malchut kol olamim, umemshalt'cha b'chol dor vador.", "en": "[0 Your sovereignty] [1 is a sovereignty] [2 for all] [3 worlds], [4 and Your dominion] [5 is in every] [6 generation] [7 after generation]."}, {"he": "יְיָ מֶלֶךְ, יְיָ מָלָךְ, יְיָ יִמְלֹךְ לְעֹלָם וָעֶד.", "tr": "Adonai melech, Adonai malach, Adonai yimloch l'olam va-ed.", "en": "[0 Adonai] [1 reigns], [2 Adonai] [3 has reigned], [4 Adonai] [5 will reign] [6 forever] [7 and ever]."}, {"he": "יְיָ עֹז לְעַמּוֹ יִתֵּן, יְיָ יְבָרֵךְ אֶת עַמּוֹ בַשָּׁלוֹם.", "tr": "Adonai oz l'amo yitein, Adonai y'vareich et amo vashalom.", "en": "[0 Adonai] [3 will give] [1 strength] [2 to God's people]; [4 Adonai] [5 will bless] [7 God's people] [8 with peace]."}]}, {"title": "Ki Mitziyon & Baruch Shenatan", "page": "246 (top) & 248 (top)", "note": null, "lines": [{"he": "כִּי מִצִּיּוֹן תֵּצֵא תוֹרָה, וּדְבַר יְיָ מִירוּשָׁלָיִם.", "tr": "Ki mitziyon teitzei Torah, ud'var Adonai miYerushalayim.", "en": "[0 For] [1 out of Zion] [2 shall go forth] [3 Torah], [4 and the word] [5 of Adonai] [6 from Jerusalem].", "label": "p. 246"}, {"he": "בָּרוּךְ שֶׁנָּתַן תּוֹרָה לְעַמּוֹ יִשְׂרָאֵל בִּקְדֻשָּׁתוֹ.", "tr": "Baruch shenatan Torah l'amo Yisrael bikdushato.", "en": "[0 Blessed is the One] [1 who gave] [2 Torah] [3 to God's people] [4 Israel] [5 in holiness].", "label": "p. 248"}]}, {"title": "Shema, Echad & Gadlu", "page": "248", "note": null, "lines": [{"he": "שְׁמַע יִשְׂרָאֵל, יְיָ אֱלֹהֵינוּ, יְיָ אֶחָד.", "tr": "Sh'ma Yisrael, Adonai Eloheinu, Adonai Echad.", "en": "[0 Hear], [1 O Israel]: [2 Adonai] [3 is our God], [4 Adonai] [5 is One]."}, {"he": "אֶחָד אֱלֹהֵינוּ, גָּדוֹל אֲדוֹנֵינוּ, קָדוֹשׁ שְׁמוֹ.", "tr": "Echad Eloheinu, gadol Adoneinu, kadosh sh'mo.", "en": "[1 Our God] [0 is One], [3 our Sovereign] [2 is great], [5 God's name] [4 is holy]."}, {"he": "גַּדְּלוּ לַייָ אִתִּי, וּנְרוֹמְמָה שְׁמוֹ יַחְדָּו.", "tr": "Gadlu l'Adonai iti, un'rom'mah sh'mo yachdav.", "en": "[0 Exalt] [1 Adonai] [2 with me], [3 and let us extol] [4 God's name] [5 together]."}]}, {"title": "Torah Blessings", "page": "250", "note": null, "lines": [{"he": "בָּרְכוּ אֶת יְיָ הַמְבֹרָךְ.", "tr": "Bar'chu et Adonai ham'vorach.", "en": "[0 Praise] [2 Adonai], [3 the One who is to be praised].", "label": "Before reading"}, {"he": "בָּרוּךְ יְיָ הַמְבֹרָךְ לְעוֹלָם וָעֶד.", "tr": "Baruch Adonai ham'vorach l'olam va-ed.", "en": "[0 Praised be] [1 Adonai], [2 the One who is to be praised], [3 forever] [4 and ever]."}, {"he": "", "tr": "", "en": "(The one called up repeats “Baruch Adonai ham'vorach l'olam va-ed” and continues.)"}, {"he": "בָּרוּךְ אַתָּה, יְיָ אֱלֹהֵינוּ, מֶלֶךְ הָעוֹלָם,", "tr": "Baruch atah, Adonai Eloheinu, Melech haolam,", "en": "[0 Blessed] [1 are You], [2 Adonai] [3 our God], [4 Sovereign] [5 of the universe],"}, {"he": "אֲשֶׁר בָּחַר בָּנוּ מִכָּל הָעַמִּים, וְנָתַן לָנוּ אֶת תּוֹרָתוֹ.", "tr": "asher bachar banu mikol ha-amim, v'natan lanu et Torato.", "en": "[0 who] [1 has chosen] [2 us] [3 from all] [4 the peoples] [5 and given] [6 us] [8 the Torah]."}, {"he": "בָּרוּךְ אַתָּה, יְיָ, נוֹתֵן הַתּוֹרָה.", "tr": "Baruch atah, Adonai, notein haTorah.", "en": "[0 Blessed] [1 are You], [2 Adonai], [3 Giver of] [4 the Torah]."}, {"he": "בָּרוּךְ אַתָּה, יְיָ אֱלֹהֵינוּ, מֶלֶךְ הָעוֹלָם,", "tr": "Baruch atah, Adonai Eloheinu, Melech haolam,", "en": "[0 Blessed] [1 are You], [2 Adonai] [3 our God], [4 Sovereign] [5 of the universe],", "label": "After reading"}, {"he": "אֲשֶׁר נָתַן לָנוּ תּוֹרַת אֱמֶת, וְחַיֵּי עוֹלָם נָטַע בְּתוֹכֵנוּ.", "tr": "asher natan lanu Torat emet, v'chayei olam nata b'tocheinu.", "en": "[0 who] [1 has given] [2 us] [3 a Torah] [4 of truth], [5 and] [7 planted] [5 life] [6 eternal] [8 within us]."}, {"he": "בָּרוּךְ אַתָּה, יְיָ, נוֹתֵן הַתּוֹרָה.", "tr": "Baruch atah, Adonai, notein haTorah.", "en": "[0 Blessed] [1 are You], [2 Adonai], [3 Giver of] [4 the Torah]."}]}, {"title": "Haftarah Blessings", "page": "254", "note": null, "lines": [{"he": "בָּרוּךְ אַתָּה, יְיָ אֱלֹהֵינוּ, מֶלֶךְ הָעוֹלָם,", "tr": "Baruch atah, Adonai Eloheinu, Melech haolam,", "en": "[0 Blessed] [1 are You], [2 Adonai] [3 our God], [4 Sovereign] [5 of the universe],", "label": "Before reading"}, {"he": "אֲשֶׁר בָּחַר בִּנְבִיאִים טוֹבִים, וְרָצָה בְדִבְרֵיהֶם הַנֶּאֱמָרִים בֶּאֱמֶת.", "tr": "asher bachar binvi-im tovim, v'ratzah v'divreihem hane-emarim be-emet.", "en": "[0 who] [1 has chosen] [3 good] [2 prophets], [4 and delighted] [5 in their words] [6 spoken] [7 in truth]."}, {"he": "בָּרוּךְ אַתָּה, יְיָ, הַבּוֹחֵר בַּתּוֹרָה, וּבְמֹשֶׁה עַבְדּוֹ,", "tr": "Baruch atah, Adonai, habocheir baTorah, uv'Moshe avdo,", "en": "[0 Blessed] [1 are You], [2 Adonai], [3 who chooses] [4 the Torah], [5 Moses] [6 God's servant],"}, {"he": "וּבְיִשְׂרָאֵל עַמּוֹ, וּבִנְבִיאֵי הָאֱמֶת וָצֶדֶק.", "tr": "uv'Yisrael amo, uvinvi-ei ha-emet vatzedek.", "en": "[0 Israel] [1 God's people], [2 and the prophets] [3 of truth] [4 and righteousness]."}, {"he": "בָּרוּךְ אַתָּה, יְיָ אֱלֹהֵינוּ, מֶלֶךְ הָעוֹלָם,", "tr": "Baruch atah, Adonai Eloheinu, Melech haolam,", "en": "[0 Blessed] [1 are You], [2 Adonai] [3 our God], [4 Sovereign] [5 of the universe],", "label": "After reading"}, {"he": "צוּר כָּל הָעוֹלָמִים, צַדִּיק בְּכָל הַדּוֹרוֹת,", "tr": "tzur kol ha-olamim, tzadik b'chol hadorot,", "en": "[0 Rock] [1 of all] [2 the worlds], [3 righteous] [4 in all] [5 generations],"}, {"he": "הָאֵל הַנֶּאֱמָן, הָאוֹמֵר וְעֹשֶׂה, הַמְדַבֵּר וּמְקַיֵּם,", "tr": "ha-El hane-eman, ha-omeir v'oseh, ham'dabeir um'kayeim,", "en": "[1 faithful] [0 God], [2 who says] [3 and does], [4 who speaks] [5 and fulfills],"}, {"he": "שֶׁכָּל דְּבָרָיו אֱמֶת וָצֶדֶק.", "tr": "shekol d'varav emet vatzedek.", "en": "[0 for all] [1 Your words] [2 are true] [3 and just]."}, {"he": "עַל הַתּוֹרָה, וְעַל הָעֲבוֹדָה, וְעַל הַנְּבִיאִים, וְעַל יוֹם הַשַּׁבָּת הַזֶּה,", "tr": "Al haTorah, v'al ha-avodah, v'al han'vi-im, v'al yom haShabbat hazeh,", "en": "[0 For] [1 the Torah], [2 for] [3 worship], [4 for] [5 the prophets], [6 and for] [9 this] [8 Shabbat] [7 day],"}, {"he": "שֶׁנָּתַתָּ לָּנוּ, יְיָ אֱלֹהֵינוּ, לִקְדֻשָּׁה וְלִמְנוּחָה, לְכָבוֹד וּלְתִפְאָרֶת.", "tr": "shenatata lanu, Adonai Eloheinu, likdushah v'limnuchah, l'chavod ul'tifaret.", "en": "[0 which You have given] [1 us], [2 Adonai] [3 our God], [4 for holiness] [5 and rest], [6 for honor] [7 and glory]."}, {"he": "עַל הַכֹּל, יְיָ אֱלֹהֵינוּ, אֲנַחְנוּ מוֹדִים לָךְ, וּמְבָרְכִים אוֹתָךְ.", "tr": "Al hakol, Adonai Eloheinu, anachnu modim lach, um'varchim otach.", "en": "[0 For] [1 all this], [2 Adonai] [3 our God], [4 we] [5 thank] [6 You] [7 and bless] [8 You]."}, {"he": "יִתְבָּרַךְ שִׁמְךָ בְּפִי כָּל חַי תָּמִיד לְעוֹלָם וָעֶד.", "tr": "Yitbarach shimcha b'fi kol chai tamid l'olam va-ed.", "en": "[1 May Your name] [0 be blessed] [2 by the mouth] [3 of every] [4 living being], [5 always], [6 forever] [7 and ever]."}, {"he": "בָּרוּךְ אַתָּה, יְיָ, מְקַדֵּשׁ הַשַּׁבָּת.", "tr": "Baruch atah, Adonai, m'kadeish haShabbat.", "en": "[0 Blessed] [1 are You], [2 Adonai], [3 who sanctifies] [4 Shabbat]."}]}, {"title": "Aleinu", "page": "282 (bottom)", "note": null, "lines": [{"he": "עָלֵינוּ לְשַׁבֵּחַ לַאֲדוֹן הַכֹּל,", "tr": "Aleinu l'shabei-ach la-adon hakol,", "en": "[0 It is upon us] [1 to praise] [2 the Master] [3 of all],"}, {"he": "לָתֵת גְּדֻלָּה לְיוֹצֵר בְּרֵאשִׁית,", "tr": "lateit g'dulah l'yotzeir b'reishit,", "en": "[0 to ascribe] [1 greatness] [2 to the Creator] [3 of the beginning],"}, {"he": "שֶׁלֹּא עָשָׂנוּ כְּגוֹיֵי הָאֲרָצוֹת, וְלֹא שָׂמָנוּ כְּמִשְׁפְּחוֹת הָאֲדָמָה,", "tr": "shelo asanu k'goyei ha-aratzot, v'lo samanu k'mishp'chot ha-adamah,", "en": "[0 who has not] [1 made us] [2 like the nations] [3 of the lands], [4 and has not] [5 placed us] [6 like the families] [7 of the earth],"}, {"he": "שֶׁלֹּא שָׂם חֶלְקֵנוּ כָּהֶם, וְגוֹרָלֵנוּ כְּכָל הֲמוֹנָם.", "tr": "shelo sam chelkeinu kahem, v'goraleinu k'chol hamonam.", "en": "[0 who has not] [1 made] [2 our portion] [3 like theirs], [4 nor our destiny] [5 like all] [6 their multitudes]."}, {"he": "וַאֲנַחְנוּ כּוֹרְעִים וּמִשְׁתַּחֲוִים וּמוֹדִים,", "tr": "Va-anachnu kor'im umishtachavim umodim,", "en": "[0 And we] [1 bend the knee], [2 bow down], [3 and give thanks]"}, {"he": "לִפְנֵי מֶלֶךְ מַלְכֵי הַמְּלָכִים, הַקָּדוֹשׁ בָּרוּךְ הוּא.", "tr": "lifnei Melech, malchei ham'lachim, HaKadosh Baruch Hu.", "en": "[0 before] [1 the Sovereign] [2 of sovereigns] [3 of sovereigns], [4 the Holy One], [5 blessed] [6 is God]."}, {"he": "שֶׁהוּא נוֹטֶה שָׁמַיִם וְיֹסֵד אָרֶץ,", "tr": "Shehu noteh shamayim v'yoseid aretz,", "en": "[0 who] [1 spreads out] [2 the heavens] [3 and establishes] [4 the earth],"}, {"he": "וּמוֹשַׁב יְקָרוֹ בַּשָּׁמַיִם מִמַּעַל,", "tr": "umoshav y'karo bashamayim mima-al,", "en": "[0 whose seat] [1 of glory] [2 is in the heavens] [3 above],"}, {"he": "וּשְׁכִינַת עֻזּוֹ בְּגָבְהֵי מְרוֹמִים.", "tr": "ush'chinat uzo b'govhei m'romim.", "en": "[0 whose presence] [1 of might] [2 is in the highest] [3 heights]."}, {"he": "הוּא אֱלֹהֵינוּ, אֵין עוֹד.", "tr": "Hu Eloheinu, ein od.", "en": "[0 This is] [1 our God]; [2 there is no] [3 other]."}, {"he": "וְנֶאֱמַר: וְהָיָה יְיָ לְמֶלֶךְ עַל כָּל הָאָרֶץ,", "tr": "V'ne-emar: v'hayah Adonai l'melech al kol ha-aretz;", "en": "[0 And it is said]: [2 Adonai] [1 shall be] [3 Sovereign] [4 over] [5 all] [6 the earth];"}, {"he": "בַּיּוֹם הַהוּא יִהְיֶה יְיָ אֶחָד, וּשְׁמוֹ אֶחָד.", "tr": "bayom hahu yih'yeh Adonai echad, ush'mo echad.", "en": "[0 on] [1 that] [0 day] [3 Adonai] [2 shall be] [4 One], [5 and God's name] [6 One]."}]}, {"title": "Kiddush (Borei P'ri Hagafen)", "page": "300–301", "note": null, "lines": [{"he": "בָּרוּךְ אַתָּה, יְיָ אֱלֹהֵינוּ, מֶלֶךְ הָעוֹלָם,", "tr": "Baruch atah, Adonai Eloheinu, Melech haolam,", "en": "[0 Blessed] [1 are You], [2 Adonai] [3 our God], [4 Sovereign] [5 of the universe],"}, {"he": "בּוֹרֵא פְּרִי הַגָּפֶן.", "tr": "borei p'ri hagafen.", "en": "[0 who creates] [1 the fruit] [2 of the vine]."}]}, {"title": "Hamotzi (Blessing over Bread)", "page": "302 (top)", "note": null, "lines": [{"he": "בָּרוּךְ אַתָּה, יְיָ אֱלֹהֵינוּ, מֶלֶךְ הָעוֹלָם,", "tr": "Baruch atah, Adonai Eloheinu, Melech haolam,", "en": "[0 Blessed] [1 are You], [2 Adonai] [3 our God], [4 Sovereign] [5 of the universe],"}, {"he": "הַמּוֹצִיא לֶחֶם מִן הָאָרֶץ.", "tr": "hamotzi lechem min ha-aretz.", "en": "[0 who brings forth] [1 bread] [2 from] [3 the earth]."}]}, {"title": "Adon Olam", "page": "321", "note": null, "lines": [{"he": "אֲדוֹן עוֹלָם אֲשֶׁר מָלַךְ,", "tr": "Adon olam asher malach,", "en": "[0 Master] [1 of the world], [2 who] [3 reigned]"}, {"he": "בְּטֶרֶם כָּל יְצִיר נִבְרָא.", "tr": "b'terem kol y'tzir nivra.", "en": "[0 before] [1 any] [2 form] [3 was created]."}, {"he": "לְעֵת נַעֲשָׂה בְחֶפְצוֹ כֹּל,", "tr": "L'eit naasah v'cheftzo kol,", "en": "[0 When] [3 all] [1 was made] [2 by God's will],"}, {"he": "אֲזַי מֶלֶךְ שְׁמוֹ נִקְרָא.", "tr": "azai melech sh'mo nikra.", "en": "[0 then] [2 God's name] [3 was proclaimed] [1 Sovereign]."}, {"he": "וְאַחֲרֵי כִּכְלוֹת הַכֹּל,", "tr": "V'acharei kichlot hakol,", "en": "[0 And after] [2 all] [1 ceases to be],"}, {"he": "לְבַדּוֹ יִמְלוֹךְ נוֹרָא.", "tr": "l'vado yimloch nora.", "en": "[2 the Awesome One] [1 will reign] [0 alone]."}, {"he": "וְהוּא הָיָה, וְהוּא הֹוֶה,", "tr": "V'hu hayah, v'hu hoveh,", "en": "[0 God] [1 was], [2 God] [3 is],"}, {"he": "וְהוּא יִהְיֶה, בְּתִפְאָרָה.", "tr": "v'hu yih'yeh b'tifarah.", "en": "[0 and God] [1 will be] [2 in glory]."}, {"he": "וְהוּא אֶחָד וְאֵין שֵׁנִי,", "tr": "V'hu echad v'ein sheini,", "en": "[0 God] [1 is One], [2 there is no] [3 second]"}, {"he": "לְהַמְשִׁיל לוֹ לְהַחְבִּירָה.", "tr": "l'hamshil lo l'hachbirah.", "en": "[0 to compare] [1 to God] [2 or to place beside]."}, {"he": "בְּלִי רֵאשִׁית בְּלִי תַכְלִית,", "tr": "B'li reishit b'li tachlit,", "en": "[0 Without] [1 beginning], [2 without] [3 end],"}, {"he": "וְלוֹ הָעֹז וְהַמִּשְׂרָה.", "tr": "v'lo ha-oz v'hamisrah.", "en": "[0 God's are] [1 the power] [2 and dominion]."}, {"he": "וְהוּא אֵלִי וְחַי גֹּאֲלִי,", "tr": "V'hu Eli v'chai go-ali,", "en": "[0 This is] [1 my God], [2 my living] [3 Redeemer],"}, {"he": "וְצוּר חֶבְלִי בְּעֵת צָרָה.", "tr": "v'tzur chevli b'eit tzarah.", "en": "[0 the Rock] [1 in my struggles] [2 in times] [3 of trouble]."}, {"he": "וְהוּא נִסִּי וּמָנוֹס לִי,", "tr": "V'hu nisi umanos li,", "en": "[0 God is] [1 my banner] [2 and refuge] [3 for me],"}, {"he": "מְנָת כּוֹסִי בְּיוֹם אֶקְרָא.", "tr": "m'nat kosi b'yom ekra.", "en": "[0 the portion] [1 of my cup] [2 on the day] [3 I call]."}, {"he": "בְּיָדוֹ אַפְקִיד רוּחִי,", "tr": "B'yado afkid ruchi,", "en": "[1 I entrust] [2 my spirit] [0 into God's hand]"}, {"he": "בְּעֵת אִישַׁן וְאָעִירָה.", "tr": "b'eit ishan v'a-irah.", "en": "[0 when] [1 I sleep] [2 and when I wake]."}, {"he": "וְעִם רוּחִי גְּוִיָּתִי,", "tr": "V'im ruchi g'viyati,", "en": "[0 And with] [1 my spirit], [2 my body]:"}, {"he": "יְיָ לִי וְלֹא אִירָא.", "tr": "Adonai li v'lo ira.", "en": "[0 Adonai] [1 is with me]; [2 I will not] [3 fear]."}]}]</script>
+<script>
+(() => {
+  const DATA = JSON.parse(document.getElementById('data').textContent);
+  const synth = window.speechSynthesis;
+  const $ = s => document.querySelector(s);
+  const NCOL = 10;
+  const PLAY = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z"/></svg>';
+
+  // ---- Build page ----
+  const lines = []; // flat list {p, el, toks:[{he,speak,els:[]}]}
+  const toc = $('#toc'), host = $('#prayers');
+
+  function speakForm(t) {
+    let s = t.replace(/_/g, ' ');
+    s = s.replace(/\s*\(.*?\)/g, '');          // hakol (meitim) -> hakol
+    s = s.replace(/\/\S*/, '');                // ben/bat -> ben
+    s = s.replace(/[,.;:!?]/g, '');
+    s = s.replace(/^לַייָ$/, 'לַאדֹנָי').replace(/^יְיָ$/, 'אֲדֹנָי');
+    return s.trim();
+  }
+  function span(text, i) {
+    const s = document.createElement('span');
+    s.className = 'w c' + (i % NCOL);
+    s.textContent = text;
+    s.tabIndex = 0;
+    return s;
+  }
+
+  DATA.forEach((p, pi) => {
+    const id = 'p' + pi;
+    const a = document.createElement('a');
+    a.href = '#' + id; a.innerHTML = '';
+    a.append(p.title.replace(/\s*\(.*\)$/, ''));
+    const pg = document.createElement('span'); pg.textContent = 'p. ' + p.page.replace(/ \(.*?\)/g, '');
+    a.append(pg); toc.append(a);
+
+    const sec = document.createElement('section'); sec.className = 'prayer'; sec.id = id;
+    sec.innerHTML = `<div class="ph"><h2></h2><span class="page"></span><button class="btn" type="button">Play prayer</button></div>`;
+    sec.querySelector('h2').textContent = p.title;
+    sec.querySelector('.page').textContent = 'Mishkan T’filah p. ' + p.page;
+    sec.querySelector('button').addEventListener('click', () => startAt(lines.findIndex(l => l.p === pi), pi));
+    if (p.note) { const n = document.createElement('p'); n.className = 'note'; n.textContent = p.note; sec.append(n); }
+    const ch = document.createElement('div'); ch.className = 'colhead';
+    ch.innerHTML = '<span></span><span class="h">Hebrew</span><span>Transliteration</span><span>English</span>';
+    sec.append(ch);
+
+    p.lines.forEach(ln => {
+      if (ln.label) { const l = document.createElement('div'); l.className = 'lab'; l.textContent = ln.label; sec.append(l); }
+      const row = document.createElement('div'); row.className = 'row';
+      if (!ln.he) {
+        row.innerHTML = '<div></div><div class="inst"></div>';
+        row.lastChild.textContent = ln.en; sec.append(row); return;
+      }
+      const heT = ln.he.split(/\s+/), trT = ln.tr.split(/\s+/);
+      const toks = heT.map((h, i) => ({ he: h, speak: speakForm(h), els: [] }));
+      const lpc = document.createElement('div'); lpc.className = 'lpc';
+      const lp = document.createElement('button'); lp.className = 'lp'; lp.type = 'button'; lp.innerHTML = PLAY;
+      lp.setAttribute('aria-label', 'Play this line'); lpc.append(lp);
+      const he = document.createElement('div'); he.className = 'he'; he.dir = 'rtl'; he.lang = 'he';
+      const tr = document.createElement('div'); tr.className = 'tr';
+      const en = document.createElement('div'); en.className = 'en';
+      heT.forEach((h, i) => { const s = span(h.replace(/_/g, ' '), i); toks[i].els.push(s); he.append(s, ' '); });
+      trT.forEach((t, i) => { const s = span(t.replace(/_/g, ' '), i); if (toks[i]) toks[i].els.push(s); tr.append(s, ' '); });
+      ln.en.split(/(\[\d+ [^\]]+\])/).forEach(part => {
+        const m = part.match(/^\[(\d+) ([^\]]+)\]$/);
+        if (m) { const i = +m[1]; const s = span(m[2], i); toks[i].els.push(s); en.append(s); }
+        else if (part) en.append(part);
+      });
+      row.append(lpc, he, tr, en); sec.append(row);
+      const idx = lines.length;
+      lines.push({ p: pi, el: row, toks });
+      lp.addEventListener('click', () => startAt(idx, null, true));
+      toks.forEach((t, ti) => t.els.forEach(e => {
+        const go = () => speakWord(idx, ti);
+        e.addEventListener('click', go);
+        e.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); go(); } });
+      }));
+    });
+    host.append(sec);
+  });
+
+  // ---- Voices ----
+  const voiceSel = $('#voice'), warn = $('#warn');
+  let voices = [];
+  function loadVoices() {
+    if (!synth) return;
+    const all = synth.getVoices();
+    voices = all.filter(v => /^(he|iw)/i.test(v.lang));
+    voiceSel.innerHTML = '';
+    voices.forEach((v, i) => { const o = document.createElement('option'); o.value = i; o.textContent = v.name.replace(/\s*\(.*\)/, '') + (v.localService ? '' : ' (online)'); voiceSel.append(o); });
+    if (!voices.length) {
+      const o = document.createElement('option'); o.textContent = 'No Hebrew voice'; voiceSel.append(o);
+      warn.hidden = false;
+      warn.textContent = all.length
+        ? 'This device has no Hebrew voice, so words will highlight in time without sound. To add one: on a Mac, System Settings → Accessibility → Spoken Content → System voice → Manage Voices → Hebrew; on iPhone, Settings → Accessibility → Spoken Content → Voices → Hebrew; on Windows, add the Hebrew speech pack.'
+        : 'Loading voices…';
+    } else warn.hidden = true;
+  }
+  if (synth) { loadVoices(); synth.addEventListener?.('voiceschanged', loadVoices); setTimeout(loadVoices, 800); }
+  else { warn.hidden = false; warn.textContent = 'This browser has no speech support, so words will highlight in time without sound.'; }
+
+  // ---- Settings (remembered per viewer) ----
+  const rate = $('#rate'), rateOut = $('#rateOut'), mode = $('#mode'), repeat = $('#repeat');
+  try { const s = JSON.parse(localStorage.getItem('bm-settings-v2') || '{}'); if (s.rate) rate.value = s.rate; if (s.mode) mode.value = s.mode; } catch (e) {}
+  const save = () => { try { localStorage.setItem('bm-settings-v2', JSON.stringify({ rate: rate.value, mode: mode.value })); } catch (e) {} };
+  const showRate = () => rateOut.textContent = (+rate.value).toFixed(2) + '×';
+  showRate();
+  rate.addEventListener('input', () => { showRate(); save(); });
+  mode.addEventListener('change', save);
+
+  // ---- Playback ----
+  let run = 0;            // increments to cancel any in-flight sequence
+  let paused = false, playing = false;
+  let cur = { line: -1, tok: -1 };
+  let range = null;       // {from, to} line indexes; null = single
+  const btnPause = $('#pause'), btnStop = $('#stop'), now = $('#now');
+
+  function clearHi() { document.querySelectorAll('.w.hi').forEach(e => e.classList.remove('hi')); }
+  function setLine(i) {
+    document.querySelectorAll('.row.active').forEach(e => e.classList.remove('active'));
+    if (i >= 0) {
+      const l = lines[i]; l.el.classList.add('active');
+      const r = l.el.getBoundingClientRect(), top = 80;
+      if (r.top < top || r.bottom > innerHeight - 40) l.el.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      now.innerHTML = ''; const b = document.createElement('b'); b.textContent = DATA[l.p].title;
+      now.append(b, ' · p. ' + DATA[l.p].page);
+    }
+  }
+  function hi(li, ti) { clearHi(); if (ti >= 0) lines[li].toks[ti].els.forEach(e => e.classList.add('hi')); cur = { line: li, tok: ti }; }
+  const voice = () => voices[+voiceSel.value] || null;
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  async function whilePaused(myRun) { while (paused && myRun === run) await wait(120); }
+
+  // Speak text; resolves when done. Falls back to a timer when there is no Hebrew voice.
+  function say(text, onBoundary) {
+    return new Promise(resolve => {
+      const v = voice();
+      const est = Math.max(350, text.length * 95) / (+rate.value);
+      if (!synth || !v) { setTimeout(resolve, est); return; }
+      const u = new SpeechSynthesisUtterance(text);
+      u.voice = v; u.lang = v.lang; u.rate = +rate.value;
+      let done = false; const fin = () => { if (!done) { done = true; clearTimeout(guard); resolve(); } };
+      u.onend = fin; u.onerror = fin;
+      if (onBoundary) u.onboundary = onBoundary;
+      const guard = setTimeout(fin, est * 3 + 4000); // in case onend never fires
+      synth.speak(u);
+    });
+  }
+
+  async function playLine(li, myRun) {
+    const l = lines[li]; setLine(li);
+    if (mode.value === 'word') {
+      for (let ti = 0; ti < l.toks.length; ti++) {
+        await whilePaused(myRun); if (myRun !== run) return;
+        hi(li, ti);
+        if (l.toks[ti].speak) await say(l.toks[ti].speak);
+        if (myRun !== run) return;
+        await wait(60 / +rate.value);
+      }
+    } else {
+      // Flowing: one utterance per line; highlight from boundary events, or estimate if the voice sends none.
+      const starts = []; let text = '';
+      l.toks.forEach(t => { starts.push(text.length); text += t.speak + ' '; });
+      let got = false; hi(li, 0);
+      const est = setInterval(() => {
+        if (got || paused) return;
+        const n = cur.tok + 1; if (n < l.toks.length) hi(li, n);
+      }, 520 / +rate.value);
+      await whilePaused(myRun);
+      await say(text, e => {
+        if (myRun !== run) return; got = true;
+        let ti = 0; for (let k = 0; k < starts.length; k++) if (e.charIndex >= starts[k]) ti = k;
+        hi(li, ti);
+      });
+      clearInterval(est);
+    }
+    if (myRun === run) await wait((mode.value === 'flow' ? 120 : 350) / +rate.value);
+  }
+
+  async function startAt(from, prayerIdx, single) {
+    stop();
+    const myRun = ++run;
+    if (from < 0) return;
+    let to = lines.length - 1;
+    if (single) to = from;
+    else if (prayerIdx != null) { to = from; while (to + 1 < lines.length && lines[to + 1].p === prayerIdx) to++; }
+    playing = true; btnPause.disabled = false; btnStop.disabled = false; btnPause.textContent = 'Pause';
+    do {
+      for (let li = from; li <= to; li++) {
+        await playLine(li, myRun); if (myRun !== run) return;
+        if (repeat.value === 'line') { li--; }
+      }
+      if (repeat.value === 'prayer') {
+        const pi = lines[from].p; from = lines.findIndex(l => l.p === pi);
+        to = from; while (to + 1 < lines.length && lines[to + 1].p === pi) to++;
+      }
+    } while (repeat.value === 'prayer' && myRun === run);
+    if (myRun === run) finish();
+  }
+  function finish() { playing = false; paused = false; clearHi(); setLine(-1); btnPause.disabled = true; btnStop.disabled = true; btnPause.textContent = 'Pause'; now.textContent = 'Done. Pick a prayer or tap any word.'; }
+  function stop() { run++; paused = false; if (synth) synth.cancel(); if (playing) finish(); }
+
+  async function speakWord(li, ti) {
+    stop(); const myRun = ++run;
+    setLine(li); hi(li, ti);
+    await say(lines[li].toks[ti].speak);
+    if (myRun === run) { clearHi(); document.querySelectorAll('.row.active').forEach(e => e.classList.remove('active')); }
+  }
+
+  $('#playAll').addEventListener('click', () => startAt(0, null, false));
+  btnStop.addEventListener('click', stop);
+  btnPause.addEventListener('click', () => {
+    if (!playing) return;
+    paused = !paused;
+    btnPause.textContent = paused ? 'Resume' : 'Pause';
+    if (synth) paused ? synth.pause() : synth.resume();
+  });
+  repeat.addEventListener('change', () => {});
+})();
+</script>
