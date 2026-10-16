@@ -1,0 +1,370 @@
+<meta charset="utf-8">
+<title>Haftarah for Miketz</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Frank+Ruhl+Libre:wght@400;500&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400;1,7..72,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: sticky player bar over a single reading column; each prayer line is a 3-column row (Hebrew | transliteration | English) that stacks on phones. */
+:root {
+  --bg: #fbfaf7; --surface: #ffffff; --fg: #1d2330; --muted: #5d6474; --rule: #e4e1d8;
+  --accent: #23468c; --accent-soft: #e6ecf8; --line-active: #fff6d9;
+  --he: "Frank Ruhl Libre", "Times New Roman", "Arial Hebrew", serif;
+  --body: "Literata", Georgia, serif;
+  --ui: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --w0:#1f5fbf; --w1:#c0392b; --w2:#1e8449; --w3:#8e44ad; --w4:#c45200;
+  --w5:#00808a; --w6:#c2185b; --w7:#7a6a00; --w8:#6d4c41; --w9:#546e7a;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg:#14171e; --surface:#1b1f28; --fg:#e8e6e1; --muted:#9aa1ae; --rule:#2c313c;
+  --accent:#8fb0f0; --accent-soft:#25304a; --line-active:#2e2a1c;
+  --w0:#79a8f2; --w1:#f08070; --w2:#6fcf8e; --w3:#c69bea; --w4:#f5a35c;
+  --w5:#4fd1d9; --w6:#f27ba8; --w7:#d9c84a; --w8:#c9a28f; --w9:#a8bccb; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg:#14171e; --surface:#1b1f28; --fg:#e8e6e1; --muted:#9aa1ae; --rule:#2c313c;
+  --accent:#8fb0f0; --accent-soft:#25304a; --line-active:#2e2a1c;
+  --w0:#79a8f2; --w1:#f08070; --w2:#6fcf8e; --w3:#c69bea; --w4:#f5a35c;
+  --w5:#4fd1d9; --w6:#f27ba8; --w7:#d9c84a; --w8:#c9a28f; --w9:#a8bccb; color-scheme: dark }
+body { background: var(--bg); color: var(--fg); font-family: var(--body); font-size: 16px; }
+.wrap { max-width: 1120px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+header.top { padding-block: 28px 12px; display: grid; gap: 6px; }
+header.top h1 { font-family: var(--body); font-weight: 600; font-size: clamp(26px, 4vw, 34px); margin: 0; text-wrap: balance; letter-spacing: -0.01em; }
+header.top h1 .he { font-family: var(--he); font-weight: 500; color: var(--accent); margin-inline-start: 10px; }
+header.top p { margin: 0; color: var(--muted); font-family: var(--ui); font-size: 14px; max-width: 70ch; line-height: 1.5; }
+
+.player { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--surface); border-block: 1px solid var(--rule); font-family: var(--ui); font-size: 14px; }
+.player .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding-block: 10px; }
+.player .now { flex: 1 1 220px; min-width: 0; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.player .now b { color: var(--fg); font-weight: 600; }
+.ctrl { display: flex; align-items: center; gap: 6px; }
+.ctrl label { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+button, select { font-family: var(--ui); font-size: 14px; }
+.btn { border: 1px solid var(--rule); background: var(--surface); color: var(--fg); border-radius: 6px; padding: 6px 12px; cursor: pointer; }
+.btn:hover { border-color: var(--accent); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: var(--surface); font-weight: 600; }
+.btn:focus-visible, select:focus-visible, .w:focus-visible, .lp:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+select { border: 1px solid var(--rule); background: var(--surface); color: var(--fg); border-radius: 6px; padding: 5px 6px; max-width: 200px; }
+input[type=range] { width: 90px; accent-color: var(--accent); }
+.rate { font-variant-numeric: tabular-nums; min-width: 3.2ch; }
+.warn { flex-basis: 100%; color: var(--w1); font-size: 13px; margin: 0; }
+
+nav.toc { padding-block: 16px 4px; display: flex; flex-wrap: wrap; gap: 6px; font-family: var(--ui); font-size: 13px; }
+nav.toc a { text-decoration: none; color: var(--fg); border: 1px solid var(--rule); border-radius: 999px; padding: 4px 10px; background: var(--surface); }
+nav.toc a:hover { border-color: var(--accent); }
+nav.toc a span { color: var(--muted); font-variant-numeric: tabular-nums; margin-inline-start: 4px; }
+
+section.prayer { padding-block: 26px 6px; scroll-margin-top: 70px; }
+.ph { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px; border-bottom: 2px solid var(--fg); padding-bottom: 6px; }
+.ph h2 { font-size: 22px; font-weight: 600; margin: 0; text-wrap: balance; flex: 1 1 auto; }
+.page { font-family: var(--ui); font-size: 13px; font-weight: 600; background: var(--accent-soft); color: var(--accent); padding: 3px 9px; border-radius: 4px; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.note { font-family: var(--ui); font-size: 13px; color: var(--muted); font-style: italic; margin: 8px 0 0; }
+.colhead { display: grid; grid-template-columns: 34px 1fr 1fr 1.1fr; gap: 14px; font-family: var(--ui); font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: 8px 0 2px; }
+.colhead .h { text-align: right; }
+
+.lab { font-family: var(--ui); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: 14px 0 0 48px; }
+.row { display: grid; grid-template-columns: 34px 1fr 1fr 1.1fr; gap: 14px; padding: 9px 0; border-bottom: 1px solid var(--rule); align-items: start; border-radius: 6px; transition: background .2s; }
+.row.active { background: var(--line-active); }
+.row > div { min-width: 0; }
+.lp { width: 30px; height: 30px; border-radius: 50%; border: 1px solid var(--rule); background: var(--surface); color: var(--accent); cursor: pointer; display: grid; place-items: center; margin-top: 4px; padding: 0; }
+.lp:hover { border-color: var(--accent); }
+.lp svg { width: 12px; height: 12px; fill: currentColor; }
+.he { font-family: var(--he); font-size: 25px; line-height: 1.6; text-align: right; }
+.tr { font-style: italic; line-height: 1.55; font-weight: 600; font-size: 16px; }
+.en { line-height: 1.55; font-size: 16px; font-weight: 600; }
+.inst { font-family: var(--ui); font-size: 13px; color: var(--muted); font-style: italic; grid-column: 2 / -1; }
+.w { border-radius: 4px; padding: 0 2px; cursor: pointer; transition: background .15s, color .15s; }
+.he .w { padding: 0 3px; }
+.tr .w, .en .w { margin: 0 -2px; }
+.w:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
+.w.hi { color: var(--bg) !important; background: currentColor; }
+.w.hi { background: var(--hc); color: var(--surface) !important; }
+.c0{color:var(--w0);--hc:var(--w0)} .c1{color:var(--w1);--hc:var(--w1)} .c2{color:var(--w2);--hc:var(--w2)} .c3{color:var(--w3);--hc:var(--w3)} .c4{color:var(--w4);--hc:var(--w4)}
+.c5{color:var(--w5);--hc:var(--w5)} .c6{color:var(--w6);--hc:var(--w6)} .c7{color:var(--w7);--hc:var(--w7)} .c8{color:var(--w8);--hc:var(--w8)} .c9{color:var(--w9);--hc:var(--w9)}
+nav.site { display: flex; flex-wrap: wrap; gap: 4px 18px; padding-block: 14px 0; font-family: var(--ui); font-size: 13px; }
+nav.site a { color: var(--muted); text-decoration: none; padding-block: 2px; border-bottom: 2px solid transparent; }
+nav.site a:hover { color: var(--fg); }
+nav.site a[aria-current="page"] { color: var(--accent); border-bottom-color: var(--accent); font-weight: 600; }
+.lpc { display: grid; justify-items: center; gap: 4px; }
+.ref { font-family: var(--ui); font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.chk { display: flex; align-items: center; gap: 6px; color: var(--muted); font-size: 13px; cursor: pointer; }
+.chk input { accent-color: var(--accent); }
+footer { padding-block: 30px 40px; font-family: var(--ui); font-size: 13px; color: var(--muted); line-height: 1.6; max-width: 75ch; }
+
+@media (max-width: 720px) {
+  .colhead { display: none; }
+  .row { grid-template-columns: 34px 1fr; gap: 4px 12px; }
+  .row > .lpc { grid-row: 1 / span 3; }
+  .he { grid-column: 2; font-size: 24px; }
+  .tr, .en { grid-column: 2; }
+  .lab { padding-left: 46px; }
+}
+@media (prefers-reduced-motion: reduce) { .row, .w { transition: none; } }
+</style>
+
+<nav class="site wrap" aria-label="Pages"><a href="index.html">Daily prayers</a><a href="miketz.html">Torah: Miketz</a><a href="haftarah.html" aria-current="page">Haftarah</a></nav>
+<header class="top wrap">
+  <h1>Haftarah for Miketz <span class="he" lang="he" dir="rtl">הַפְטָרָה</span></h1>
+  <p>1 Kings 7:40–50. In 2026, Miketz falls on the 8th day of Hanukkah, so this Hanukkah haftarah replaces the usual Miketz haftarah (1 Kings 3:15–4:1). Press play, or tap any word to hear it; the word being spoken lights up in all three columns. Turn on <b>Show trope marks</b> to see the cantillation.</p>
+</header>
+
+<div class="player">
+  <div class="wrap">
+    <div class="ctrl">
+      <button class="btn primary" id="playAll" type="button">Play from start</button>
+      <button class="btn" id="pause" type="button" disabled>Pause</button>
+      <button class="btn" id="stop" type="button" disabled>Stop</button>
+    </div>
+    <div class="now" id="now">Ready.</div>
+    <div class="ctrl"><label for="rate">Speed</label><input id="rate" type="range" min="0.4" max="1.2" step="0.05" value="0.75"><span class="rate" id="rateOut">0.75×</span></div>
+    <div class="ctrl"><label for="mode">Pace</label>
+      <select id="mode"><option value="flow">Smooth</option><option value="word">Slow, word by word</option></select></div>
+    <div class="ctrl"><label for="repeat">Repeat</label>
+      <select id="repeat"><option value="0">Off</option><option value="line">Line</option><option value="prayer">Section</option></select></div>
+    <div class="ctrl"><label for="voice">Voice</label><select id="voice"></select></div>
+    <label class="chk" for="trope"><input type="checkbox" id="trope"> Show trope marks</label>
+    <p class="warn" id="warn" hidden></p>
+  </div>
+</div>
+
+<main class="wrap">
+  <nav class="toc" id="toc" aria-label="Sections"></nav>
+  <div id="prayers"></div>
+  <footer>The voice is your device’s built-in Hebrew text-to-speech. It reads the words; it doesn’t chant or sing the melody, and it can mispronounce some words. For melodies, learn from your cantor’s or tutor’s recordings. It does not chant the haftarah trope. The English is a literal, word-by-word translation written for this page. Before and after the haftarah, the reader says the Haftarah blessings, which are on the Daily prayers page. Hebrew text: <i>Miqra according to the Masorah</i> via Sefaria (CC BY-SA).</footer>
+</main>
+
+<script id="data" type="application/json">[{"title": "Haftarah for Shabbat Hanukkah (8th day)", "chip": "1 Kings 7:40–50", "short": "7:40", "note": null, "lines": [{"he": "וַיַּ֣עַשׂ חִיר֔וֹם אֶ֨ת־הַכִּיֹּר֔וֹת וְאֶת־הַיָּעִ֖ים וְאֶת־הַמִּזְרָק֑וֹת", "tr": "vaya-as Chirom et-hakiyorot v'et-haya-im v'et-hamizrakot", "en": "[1 Hiram] [0 made] [2 the basins], [3 the shovels], [4 and the sprinkling bowls].", "ref": "7:40"}, {"he": "וַיְכַ֣ל חִירָ֗ם לַֽעֲשׂוֹת֙ אֶת־כׇּל־הַמְּלָאכָ֔ה אֲשֶׁ֥ר עָשָׂ֛ה לַמֶּ֥לֶךְ שְׁלֹמֹ֖ה בֵּ֥ית יְהֹוָֽה", "tr": "vay'chal Chiram la-asot et-kol-ham'lachah asher asah lamelech Sh'lomo beit Adonai", "en": "[1 So Hiram] [0 finished] [2 doing] [3 all the work] [4 that] [5 he did] [6 for King] [7 Solomon] [8 for the House] [9 of Adonai]:"}, {"he": "עַמֻּדִ֣ים שְׁנַ֔יִם וְגֻלֹּ֧ת הַכֹּתָרֹ֛ת אֲשֶׁר־עַל־רֹ֥אשׁ הָעַמּוּדִ֖ים שְׁתָּ֑יִם", "tr": "amudim sh'nayim v'gulot hakotarot asher-al-rosh ha-amudim sh'tayim", "en": "[1 two] [0 pillars], [2 and the bowls] [3 of the capitals] [4 that were on top of] [5 the pillars], [6 two];", "ref": "7:41"}, {"he": "וְהַשְּׂבָכ֣וֹת שְׁתַּ֔יִם לְכַסּ֗וֹת אֶת־שְׁתֵּי֙ גֻּלּ֣וֹת הַכֹּתָרֹ֔ת אֲשֶׁ֖ר עַל־רֹ֥אשׁ הָעַמּוּדִֽים", "tr": "v'has'vachot sh'tayim l'chasot et-sh'tei gulot hakotarot asher al-rosh ha-amudim", "en": "[0 and the two] [0 latticeworks] [2 to cover] [3 the two] [4 bowls] [5 of the capitals] [6 that were] [7 on top of] [8 the pillars];"}, {"he": "וְאֶת־הָרִמֹּנִ֛ים אַרְבַּ֥ע מֵא֖וֹת לִשְׁתֵּ֣י הַשְּׂבָכ֑וֹת", "tr": "v'et-harimonim arba mei-ot lishtei has'vachot", "en": "[0 and the] [1 four] [2 hundred] [0 pomegranates] [3 for the two] [4 latticeworks],", "ref": "7:42"}, {"he": "שְׁנֵֽי־טוּרִ֤ים רִמֹּנִים֙ לַשְּׂבָכָ֣ה הָאֶחָ֔ת לְכַסּ֗וֹת אֶת־שְׁתֵּי֙ גֻּלּ֣וֹת הַכֹּתָרֹ֔ת אֲשֶׁ֖ר עַל־פְּנֵ֥י הָעַמּוּדִֽים", "tr": "sh'nei-turim rimonim las'vachah ha-echat l'chasot et-sh'tei gulot hakotarot asher al-p'nei ha-amudim", "en": "[0 two rows] [1 of pomegranates] [2 for each] [2 latticework], [4 to cover] [5 the two] [6 bowls] [7 of the capitals] [8 that were] [9 on top of] [10 the pillars];"}, {"he": "וְאֶת־הַמְּכֹנ֖וֹת עָ֑שֶׂר", "tr": "v'et-ham'chonot aser", "en": "[0 and the] [1 ten] [0 stands],", "ref": "7:43"}, {"he": "וְאֶת־הַכִּיֹּרֹ֥ת עֲשָׂרָ֖ה עַל־הַמְּכֹנֽוֹת", "tr": "v'et-hakiyorot asarah al-ham'chonot", "en": "[0 and the] [1 ten] [0 basins] [2 on the stands];"}, {"he": "וְאֶת־הַיָּ֖ם הָאֶחָ֑ד", "tr": "v'et-hayam ha-echad", "en": "[0 and the] [1 one] [0 sea],", "ref": "7:44"}, {"he": "וְאֶת־הַבָּקָ֥ר שְׁנֵים־עָשָׂ֖ר תַּ֥חַת הַיָּֽם", "tr": "v'et-habakar sh'neim-asar tachat hayam", "en": "[0 and the] [1 twelve] [0 oxen] [2 under] [3 the sea];"}, {"he": "וְאֶת־הַסִּיר֨וֹת וְאֶת־הַיָּעִ֜ים וְאֶת־הַמִּזְרָק֗וֹת וְאֵת֙ כׇּל־הַכֵּלִ֣ים הָאֵ֔לֶּה", "tr": "v'et-hasirot v'et-haya-im v'et-hamizrakot v'eit kol-hakeilim ha-eileh", "en": "[0 and the pots], [1 the shovels], [2 and the sprinkling bowls]. [3 And] [4 all] [5 these] [4 vessels]", "ref": "7:45"}, {"he": "אֲשֶׁ֨ר עָשָׂ֥ה חִירָ֛ם לַמֶּ֥לֶךְ שְׁלֹמֹ֖ה בֵּ֣ית יְהֹוָ֑ה", "tr": "asher asah Chiram lamelech Sh'lomo beit Adonai", "en": "[0 that] [2 Hiram] [1 made] [3 for King] [4 Solomon] [5 for the House] [6 of Adonai]"}, {"he": "נְחֹ֖שֶׁת מְמֹרָֽט", "tr": "n'choshet m'morat", "en": "[0 were of bronze], [1 burnished]."}, {"he": "בְּכִכַּ֤ר הַיַּרְדֵּן֙ יְצָקָ֣ם הַמֶּ֔לֶךְ בְּמַעֲבֵ֖ה הָאֲדָמָ֑ה", "tr": "b'chikar haYardein y'tzakam hamelech b'ma-aveih ha-adamah", "en": "[0 In the plain] [1 of the Jordan] [3 the king] [2 cast them], [4 in the thick] [5 clay],", "ref": "7:46"}, {"he": "בֵּ֥ין סֻכּ֖וֹת וּבֵ֥ין צָרְתָֽן", "tr": "bein Sukkot uvein Tzar'tan", "en": "[0 between] [1 Sukkot] [2 and] [3 Tzartan]."}, {"he": "וַיַּנַּ֤ח שְׁלֹמֹה֙ אֶת־כׇּל־הַכֵּלִ֔ים מֵרֹ֖ב מְאֹ֣ד מְאֹ֑ד", "tr": "vayanach Sh'lomo et-kol-hakeilim meirov m'od m'od", "en": "[1 Solomon] [0 left] [2 all the vessels] [3 unweighed, because they were so] [4 very] [5 many];", "ref": "7:47"}, {"he": "לֹ֥א נֶחְקַ֖ר מִשְׁקַ֥ל הַנְּחֹֽשֶׁת", "tr": "lo nechkar mishkal han'choshet", "en": "[2 the weight] [3 of the bronze] [0 could not] [1 be determined]."}, {"he": "וַיַּ֣עַשׂ שְׁלֹמֹ֔ה אֵ֚ת כׇּל־הַכֵּלִ֔ים אֲשֶׁ֖ר בֵּ֣ית יְהֹוָ֑ה", "tr": "vaya-as Sh'lomo eit kol-hakeilim asher beit Adonai", "en": "[1 Solomon] [0 made] [3 all the furnishings] [4 that were] [5 in the House] [6 of Adonai]:", "ref": "7:48"}, {"he": "אֵ֚ת מִזְבַּ֣ח הַזָּהָ֔ב וְאֶת־הַשֻּׁלְחָ֗ן אֲשֶׁ֥ר עָלָ֛יו לֶ֥חֶם הַפָּנִ֖ים זָהָֽב", "tr": "eit mizbach hazahav v'et-hashulchan asher alav lechem hapanim zahav", "en": "[1 the] [2 golden] [1 altar]; [3 and the table] [4 on] [5 which] [6 was the bread] [7 of display], [8 of gold];"}, {"he": "וְאֶת־הַ֠מְּנֹר֠וֹת חָמֵ֨שׁ מִיָּמִ֜ין וְחָמֵ֧שׁ מִשְּׂמֹ֛אול לִפְנֵ֥י הַדְּבִ֖יר זָהָ֣ב סָג֑וּר", "tr": "v'et-ham'norot chameish miyamin v'chameish mis'mol lifnei had'vir zahav sagur", "en": "[0 and the lampstands], [1 five] [2 on the right] [3 and five] [4 on the left], [5 in front of] [6 the inner sanctuary], [8 of pure] [7 gold];", "ref": "7:49"}, {"he": "וְהַפֶּ֧רַח וְהַנֵּרֹ֛ת וְהַמֶּלְקַחַ֖יִם זָהָֽב", "tr": "v'haperach v'haneirot v'hamelkachayim zahav", "en": "[0 and the flowers], [1 the lamps], [2 and the tongs], [3 of gold];"}, {"he": "וְ֠הַסִּפּ֠וֹת וְהַֽמְזַמְּר֧וֹת וְהַמִּזְרָק֛וֹת וְהַכַּפּ֥וֹת וְהַמַּחְתּ֖וֹת זָהָ֣ב סָג֑וּר", "tr": "v'hasipot v'ham'zam'rot v'hamizrakot v'hakapot v'hamachtot zahav sagur", "en": "[0 and the cups], [1 the snuffers], [2 the sprinkling bowls], [3 the ladles], [4 and the fire pans], [6 of pure] [5 gold];", "ref": "7:50"}, {"he": "וְהַפֹּת֡וֹת לְדַלְתוֹת֩ הַבַּ֨יִת הַפְּנִימִ֜י לְקֹ֣דֶשׁ הַקֳּדָשִׁ֗ים לְדַלְתֵ֥י הַבַּ֛יִת לַהֵיכָ֖ל זָהָֽב", "tr": "v'hapotot l'daltot habayit hapnimi l'kodesh hakodashim l'daltei habayit laheichal zahav", "en": "[0 and the hinges] [1 for the doors] [3 of the inner] [2 house], [4 for the Holy] [5 of Holies], [6 and for the doors] [7 of the house] [8 of the Great Hall], [9 of gold]."}]}]</script>
+<script>
+(() => {
+  const DATA = JSON.parse(document.getElementById('data').textContent);
+  const synth = window.speechSynthesis;
+  const $ = s => document.querySelector(s);
+  const NCOL = 10;
+  const PLAY = '<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2 1l9 5-9 5z"/></svg>';
+
+  // ---- Build page ----
+  const lines = []; // flat list {p, el, toks:[{he,speak,els:[]}]}
+  const toc = $('#toc'), host = $('#prayers');
+
+  function speakForm(t) {
+    let s = t.replace(/_/g, ' ').replace(/[\u0591-\u05AF\u05BD\u05C0]/g, '').replace(/\u05BE/g, ' ');
+    s = s.replace(/י\u05B0?ה\u05B9?ו[\u05B8\u05B4]?ה/g, 'אֲדֹנָי');
+    s = s.replace(/\s*\(.*?\)/g, '');          // hakol (meitim) -> hakol
+    s = s.replace(/\/\S*/, '');                // ben/bat -> ben
+    s = s.replace(/[,.;:!?\u05C3]/g, '');
+    s = s.replace(/^לַייָ$/, 'לַאדֹנָי').replace(/^יְיָ$/, 'אֲדֹנָי');
+    return s.trim();
+  }
+  const TROPE = /[\u0591-\u05AF\u05C0]/g;
+  let showTrope = false;
+  try { showTrope = localStorage.getItem('bm-trope') === '1'; } catch (e) {}
+  function stripTrope(s) { return showTrope ? s : s.replace(TROPE, ''); }
+  function span(text, i) {
+    const s = document.createElement('span');
+    s.className = 'w c' + (i % NCOL);
+    s.textContent = text;
+    s.tabIndex = 0;
+    return s;
+  }
+
+  DATA.forEach((p, pi) => {
+    const id = 'p' + pi;
+    const a = document.createElement('a');
+    a.href = '#' + id; a.innerHTML = '';
+    a.append(p.title.replace(/\s*\(.*\)$/, ''));
+    const pg = document.createElement('span'); pg.textContent = p.short;
+    a.append(pg); toc.append(a);
+
+    const sec = document.createElement('section'); sec.className = 'prayer'; sec.id = id;
+    sec.innerHTML = `<div class="ph"><h2></h2><span class="page"></span><button class="btn" type="button">Play haftarah</button></div>`;
+    sec.querySelector('h2').textContent = p.title;
+    sec.querySelector('.page').textContent = p.chip;
+    sec.querySelector('button').addEventListener('click', () => startAt(lines.findIndex(l => l.p === pi), pi));
+    if (p.note) { const n = document.createElement('p'); n.className = 'note'; n.textContent = p.note; sec.append(n); }
+    const ch = document.createElement('div'); ch.className = 'colhead';
+    ch.innerHTML = '<span></span><span class="h">Hebrew</span><span>Transliteration</span><span>English</span>';
+    sec.append(ch);
+
+    p.lines.forEach(ln => {
+      if (ln.label) { const l = document.createElement('div'); l.className = 'lab'; l.textContent = ln.label; sec.append(l); }
+      const row = document.createElement('div'); row.className = 'row';
+      if (!ln.he) {
+        row.innerHTML = '<div></div><div class="inst"></div>';
+        row.lastChild.textContent = ln.en; sec.append(row); return;
+      }
+      const heT = ln.he.split(/\s+/), trT = ln.tr.split(/\s+/);
+      const toks = heT.map((h, i) => ({ he: h, speak: speakForm(h), els: [] }));
+      const lpc = document.createElement('div'); lpc.className = 'lpc';
+      const lp = document.createElement('button'); lp.className = 'lp'; lp.type = 'button'; lp.innerHTML = PLAY;
+      lp.setAttribute('aria-label', 'Play this line'); lpc.append(lp);
+      if (ln.ref) { const r = document.createElement('span'); r.className = 'ref'; r.textContent = ln.ref; lpc.append(r); }
+      const he = document.createElement('div'); he.className = 'he'; he.dir = 'rtl'; he.lang = 'he';
+      const tr = document.createElement('div'); tr.className = 'tr';
+      const en = document.createElement('div'); en.className = 'en';
+      heT.forEach((h, i) => { const raw = h.replace(/_/g, ' '); const s = span(stripTrope(raw), i); s.dataset.raw = raw; toks[i].els.push(s); he.append(s, ' '); });
+      trT.forEach((t, i) => { const s = span(t.replace(/_/g, ' '), i); if (toks[i]) toks[i].els.push(s); tr.append(s, ' '); });
+      ln.en.split(/(\[\d+ [^\]]+\])/).forEach(part => {
+        const m = part.match(/^\[(\d+) ([^\]]+)\]$/);
+        if (m) { const i = +m[1]; const s = span(m[2], i); toks[i].els.push(s); en.append(s); }
+        else if (part) en.append(part);
+      });
+      row.append(lpc, he, tr, en); sec.append(row);
+      const idx = lines.length;
+      lines.push({ p: pi, el: row, toks });
+      lp.addEventListener('click', () => startAt(idx, null, true));
+      toks.forEach((t, ti) => t.els.forEach(e => {
+        const go = () => speakWord(idx, ti);
+        e.addEventListener('click', go);
+        e.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); go(); } });
+      }));
+    });
+    host.append(sec);
+  });
+
+  // ---- Voices ----
+  const voiceSel = $('#voice'), warn = $('#warn');
+  let voices = [];
+  function loadVoices() {
+    if (!synth) return;
+    const all = synth.getVoices();
+    voices = all.filter(v => /^(he|iw)/i.test(v.lang));
+    voiceSel.innerHTML = '';
+    voices.forEach((v, i) => { const o = document.createElement('option'); o.value = i; o.textContent = v.name.replace(/\s*\(.*\)/, '') + (v.localService ? '' : ' (online)'); voiceSel.append(o); });
+    if (!voices.length) {
+      const o = document.createElement('option'); o.textContent = 'No Hebrew voice'; voiceSel.append(o);
+      warn.hidden = false;
+      warn.textContent = all.length
+        ? 'This device has no Hebrew voice, so words will highlight in time without sound. To add one: on a Mac, System Settings → Accessibility → Spoken Content → System voice → Manage Voices → Hebrew; on iPhone, Settings → Accessibility → Spoken Content → Voices → Hebrew; on Windows, add the Hebrew speech pack.'
+        : 'Loading voices…';
+    } else warn.hidden = true;
+  }
+  if (synth) { loadVoices(); synth.addEventListener?.('voiceschanged', loadVoices); setTimeout(loadVoices, 800); }
+  else { warn.hidden = false; warn.textContent = 'This browser has no speech support, so words will highlight in time without sound.'; }
+
+  // ---- Settings (remembered per viewer) ----
+  const rate = $('#rate'), rateOut = $('#rateOut'), mode = $('#mode'), repeat = $('#repeat');
+  try { const s = JSON.parse(localStorage.getItem('bm-settings-v2') || '{}'); if (s.rate) rate.value = s.rate; if (s.mode) mode.value = s.mode; } catch (e) {}
+  const save = () => { try { localStorage.setItem('bm-settings-v2', JSON.stringify({ rate: rate.value, mode: mode.value })); } catch (e) {} };
+  const showRate = () => rateOut.textContent = (+rate.value).toFixed(2) + '×';
+  showRate();
+  rate.addEventListener('input', () => { showRate(); save(); });
+  mode.addEventListener('change', save);
+
+  // ---- Playback ----
+  let run = 0;            // increments to cancel any in-flight sequence
+  let paused = false, playing = false;
+  let cur = { line: -1, tok: -1 };
+  let range = null;       // {from, to} line indexes; null = single
+  const btnPause = $('#pause'), btnStop = $('#stop'), now = $('#now');
+
+  function clearHi() { document.querySelectorAll('.w.hi').forEach(e => e.classList.remove('hi')); }
+  function setLine(i) {
+    document.querySelectorAll('.row.active').forEach(e => e.classList.remove('active'));
+    if (i >= 0) {
+      const l = lines[i]; l.el.classList.add('active');
+      const r = l.el.getBoundingClientRect(), top = 80;
+      if (r.top < top || r.bottom > innerHeight - 40) l.el.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+      now.innerHTML = ''; const b = document.createElement('b'); b.textContent = DATA[l.p].title;
+      now.append(b, ' · p. ' + DATA[l.p].page);
+    }
+  }
+  function hi(li, ti) { clearHi(); if (ti >= 0) lines[li].toks[ti].els.forEach(e => e.classList.add('hi')); cur = { line: li, tok: ti }; }
+  const voice = () => voices[+voiceSel.value] || null;
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  async function whilePaused(myRun) { while (paused && myRun === run) await wait(120); }
+
+  // Speak text; resolves when done. Falls back to a timer when there is no Hebrew voice.
+  function say(text, onBoundary) {
+    return new Promise(resolve => {
+      const v = voice();
+      const est = Math.max(350, text.length * 95) / (+rate.value);
+      if (!synth || !v) { setTimeout(resolve, est); return; }
+      const u = new SpeechSynthesisUtterance(text);
+      u.voice = v; u.lang = v.lang; u.rate = +rate.value;
+      let done = false; const fin = () => { if (!done) { done = true; clearTimeout(guard); resolve(); } };
+      u.onend = fin; u.onerror = fin;
+      if (onBoundary) u.onboundary = onBoundary;
+      const guard = setTimeout(fin, est * 3 + 4000); // in case onend never fires
+      synth.speak(u);
+    });
+  }
+
+  async function playLine(li, myRun) {
+    const l = lines[li]; setLine(li);
+    if (mode.value === 'word') {
+      for (let ti = 0; ti < l.toks.length; ti++) {
+        await whilePaused(myRun); if (myRun !== run) return;
+        hi(li, ti);
+        if (l.toks[ti].speak) await say(l.toks[ti].speak);
+        if (myRun !== run) return;
+        await wait(60 / +rate.value);
+      }
+    } else {
+      // Flowing: one utterance per line; highlight from boundary events, or estimate if the voice sends none.
+      const starts = []; let text = '';
+      l.toks.forEach(t => { starts.push(text.length); text += t.speak + ' '; });
+      let got = false; hi(li, 0);
+      const est = setInterval(() => {
+        if (got || paused) return;
+        const n = cur.tok + 1; if (n < l.toks.length) hi(li, n);
+      }, 520 / +rate.value);
+      await whilePaused(myRun);
+      await say(text, e => {
+        if (myRun !== run) return; got = true;
+        let ti = 0; for (let k = 0; k < starts.length; k++) if (e.charIndex >= starts[k]) ti = k;
+        hi(li, ti);
+      });
+      clearInterval(est);
+    }
+    if (myRun === run) await wait((mode.value === 'flow' ? 120 : 350) / +rate.value);
+  }
+
+  async function startAt(from, prayerIdx, single) {
+    stop();
+    const myRun = ++run;
+    if (from < 0) return;
+    let to = lines.length - 1;
+    if (single) to = from;
+    else if (prayerIdx != null) { to = from; while (to + 1 < lines.length && lines[to + 1].p === prayerIdx) to++; }
+    playing = true; btnPause.disabled = false; btnStop.disabled = false; btnPause.textContent = 'Pause';
+    do {
+      for (let li = from; li <= to; li++) {
+        await playLine(li, myRun); if (myRun !== run) return;
+        if (repeat.value === 'line') { li--; }
+      }
+      if (repeat.value === 'prayer') {
+        const pi = lines[from].p; from = lines.findIndex(l => l.p === pi);
+        to = from; while (to + 1 < lines.length && lines[to + 1].p === pi) to++;
+      }
+    } while (repeat.value === 'prayer' && myRun === run);
+    if (myRun === run) finish();
+  }
+  function finish() { playing = false; paused = false; clearHi(); setLine(-1); btnPause.disabled = true; btnStop.disabled = true; btnPause.textContent = 'Pause'; now.textContent = 'Done. Pick a section or tap any word.'; }
+  function stop() { run++; paused = false; if (synth) synth.cancel(); if (playing) finish(); }
+
+  async function speakWord(li, ti) {
+    stop(); const myRun = ++run;
+    setLine(li); hi(li, ti);
+    await say(lines[li].toks[ti].speak);
+    if (myRun === run) { clearHi(); document.querySelectorAll('.row.active').forEach(e => e.classList.remove('active')); }
+  }
+
+  const tropeBox = document.getElementById('trope');
+  if (tropeBox) {
+    tropeBox.checked = showTrope;
+    tropeBox.addEventListener('change', () => {
+      showTrope = tropeBox.checked;
+      try { localStorage.setItem('bm-trope', showTrope ? '1' : '0'); } catch (e) {}
+      document.querySelectorAll('.he .w[data-raw]').forEach(e => { e.textContent = stripTrope(e.dataset.raw); });
+    });
+  }
+  $('#playAll').addEventListener('click', () => startAt(0, null, false));
+  btnStop.addEventListener('click', stop);
+  btnPause.addEventListener('click', () => {
+    if (!playing) return;
+    paused = !paused;
+    btnPause.textContent = paused ? 'Resume' : 'Pause';
+    if (synth) paused ? synth.pause() : synth.resume();
+  });
+  repeat.addEventListener('change', () => {});
+})();
+</script>
